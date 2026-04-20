@@ -1,0 +1,40 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+# Sample dataset
+data = pd.DataFrame({
+    "x": [1,2,3,4,5],
+    "y": [10,20,25,30,40],
+    "category": ["A","B","A","B","A"]
+})
+
+# -------------------------------
+# 1. Matplotlib (Bar Plot)
+# -------------------------------
+plt.bar(data["x"], data["y"])
+plt.title("Bar Plot - Matplotlib")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.show()
+
+# -------------------------------
+# 2. Seaborn (Scatter Plot)
+# -------------------------------
+sns.scatterplot(data=data, x="x", y="y", hue="category")
+plt.title("Scatter Plot - Seaborn")
+plt.show()
+
+# -------------------------------
+# 3. Seaborn (Histogram)
+# -------------------------------
+sns.histplot(data["y"], kde=True)
+plt.title("Histogram - Seaborn")
+plt.show()
+
+# -------------------------------
+# 4. Plotly (Interactive Plot)
+# -------------------------------
+fig = px.line(data, x="x", y="y", color="category", title="Interactive Plot - Plotly")
+fig.show()
