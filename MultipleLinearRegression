@@ -1,0 +1,39 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Load dataset
+from google.colab import files
+files.upload()
+df = pd.read_csv('Biryani_Price_Prediction_Numerical_Features_Data.csv')
+
+# Separate features and target
+X = df.drop(columns=['Biryani_Price'])
+Y = df['Biryani_Price']
+
+# Train-test split
+x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Create model
+model = LinearRegression()
+model.fit(x_train, y_train)
+
+# Prediction
+y_pred = model.predict(x_test)
+
+# Coefficients
+print("Intercept:", model.intercept_)
+print("Coefficients:", model.coef_)
+
+# Model accuracy
+print("R2 Score:", model.score(x_test, y_test))
+
+# Plot
+plt.scatter(y_test, y_pred)
+plt.plot(y_test, y_pred)
+plt.xlabel("Actual Price")
+plt.ylabel("Predicted Price")
+plt.title("Actual vs Predicted Prices")
+plt.show()
