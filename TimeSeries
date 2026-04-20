@@ -1,0 +1,41 @@
+#Single Time Series (Rainfall Data)
+import pandas as pd
+import matplotlib.pyplot as plt
+# Create rainfall data (12 months)
+rainfall = [799, 1174.8, 865.1, 1334.6, 635.4, 918.5, 
+            685.5, 998.6, 784.2, 985, 882.8, 1071]
+# Create date range starting Jan 2012
+dates = pd.date_range(start='2012-01-01', periods=12, freq='M')
+# Create time series
+ts = pd.Series(rainfall, index=dates)
+# Print data
+print(ts)
+# Plot
+plt.plot(ts)
+plt.title("Monthly Rainfall Data (2012)")
+plt.xlabel("Month")
+plt.ylabel("Rainfall")
+plt.show()
+
+#Multiple Time Series
+import pandas as pd
+import matplotlib.pyplot as plt
+# Data for multiple series
+data = {
+    "Mumbai": [799, 1174, 865, 1334, 635, 918, 685, 998, 784, 985, 882, 1071],
+    "Delhi":  [200, 250, 300, 350, 400, 450, 420, 390, 360, 330, 300, 270],
+    "Chennai":[600, 650, 700, 750, 800, 850, 900, 870, 820, 780, 740, 700]
+}
+# Date index
+dates = pd.date_range(start='2012-01-01', periods=12, freq='M')
+# Create DataFrame (acts like matrix)
+df = pd.DataFrame(data, index=dates)
+# Print
+print(df)
+# Plot multiple time series
+plt.plot(df)
+plt.title("Multiple Time Series - Rainfall")
+plt.xlabel("Month")
+plt.ylabel("Rainfall")
+plt.legend(["Mumbai", "Delhi", "Chennai"])
+plt.show()
