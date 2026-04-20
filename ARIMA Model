@@ -1,0 +1,30 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller
+# Sample rainfall data (12 months)
+data = [799, 1174.8, 865.1, 1334.6, 635.4, 918.5,
+        685.5, 998.6, 784.2, 985, 882.8, 1071]
+# Create date index
+dates = pd.date_range(start='2012-01-01', periods=12, freq='M')
+# Create time series
+ts = pd.Series(data, index=dates)
+# Plot original data
+plt.plot(ts)
+plt.title("Original Time Series")
+plt.show()
+# ADF Test (stationarity)
+result = adfuller(ts)
+print("ADF Statistic:", result[0])
+print("p-value:", result[1])
+# Apply ARIMA model
+model = ARIMA(ts, order=(1,1,1))
+model_fit = model.fit()
+# Forecast next 3 months
+forecast = model_fit.forecast(steps=3)
+print("Forecasted Values:\n", forecast)
+# Plot
+plt.plot(ts, label="Original")
+plt.plot(forecast, label="Forecast")
+plt.legend()
+plt.show()
