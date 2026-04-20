@@ -1,0 +1,90 @@
+#spam filter
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
+# Better dataset
+data = {
+    "text": [
+        "Win money now", "Limited time offer", "Free prize claim now",
+        "Call now to win", "Congratulations you won",
+        "Hello friend how are you", "Let's meet tomorrow",
+        "Are you coming today", "Good morning",
+        "See you at meeting"
+    ],
+    "label": [
+        "spam","spam","spam","spam","spam",
+        "ham","ham","ham","ham","ham"
+    ]
+}
+df = pd.DataFrame(data)
+# Split
+X_train, X_test, y_train, y_test = train_test_split(
+    df["text"], df["label"], test_size=0.3, random_state=42
+)
+# TF-IDF
+vectorizer = TfidfVectorizer()
+X_train_vec = vectorizer.fit_transform(X_train)
+X_test_vec = vectorizer.transform(X_test)
+# Model
+model = MultinomialNB()
+model.fit(X_train_vec, y_train)
+# Predict
+y_pred = model.predict(X_test_vec)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+#sentiment Analysis
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Dataset (balanced)
+data = {
+    "text": [
+        # Positive
+        "I love this product", "This is amazing", "Very happy with service",
+        "Absolutely fantastic", "I really enjoyed this",
+        
+        # Negative
+        "I hate this", "Worst experience ever", "Very bad service",
+        "Totally disappointed", "Not good at all",
+        
+        # Neutral
+        "It is okay", "Average product", "Nothing special",
+        "Quite normal", "Not bad not great"
+    ],
+    "label": [
+        "positive","positive","positive","positive","positive",
+        "negative","negative","negative","negative","negative",
+        "neutral","neutral","neutral","neutral","neutral"
+    ]
+}
+
+df = pd.DataFrame(data)
+
+# Train-test split (IMPORTANT)
+X_train, X_test, y_train, y_test = train_test_split(
+    df["text"], df["label"], test_size=0.3, random_state=42, stratify=df["label"]
+)
+
+# TF-IDF
+vectorizer = TfidfVectorizer(ngram_range=(1,2))
+X_train_vec = vectorizer.fit_transform(X_train)
+X_test_vec = vectorizer.transform(X_test)
+
+# Model (better than Naive Bayes)
+model = LogisticRegression()
+model.fit(X_train_vec, y_train)
+
+# Prediction
+y_pred = model.predict(X_test_vec)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# Test your own sentence
+test = ["This product is really amazing and I love it"]
+test_vec = vectorizer.transform(test)
+print("Prediction:", model.predict(test_vec))
